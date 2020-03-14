@@ -1,0 +1,60 @@
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -Werror -Wpedantic")
+set(PROJECT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+set(PROJECT_SOURCES_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+
+find_package(PkgConfig REQUIRED)
+
+pkg_check_modules(GLIB REQUIRED glib-2.0)
+
+include_directories(
+  ${GLIB_INCLUDE_DIRS}
+)
+
+link_directories(
+  ${GLIB_LIBRARY_DIRS}
+)
+
+pkg_check_modules(GSTREAMER REQUIRED gstreamer-1.0)
+pkg_check_modules(GSTREAMER-APP REQUIRED gstreamer-app-1.0)
+pkg_check_modules(GSTREAMER-AUDIO REQUIRED gstreamer-audio-1.0)
+pkg_check_modules(GSTREAMER-PBUTILS REQUIRED gstreamer-pbutils-1.0)
+pkg_check_modules(GSTREAMER-FFT REQUIRED gstreamer-fft-1.0)
+add_definitions(-DGST_API_VERSION_1=1)
+
+include_directories(
+  ${GSTREAMER_INCLUDE_DIRS}
+  ${GSTREAMER-APP_INCLUDE_DIRS}
+  ${GSTREAMER-AUDIO_INCLUDE_DIRS}
+  ${GSTREAMER-PBUTILS_INCLUDE_DIRS}
+  ${GSTREAMER-FFT_INCLUDE_DIRS}
+)
+
+link_directories(
+  ${GSTREAMER_LIBRARY_DIRS}
+  ${GSTREAMER-APP_LIBRARY_DIRS}
+  ${GSTREAMER-AUDIO_LIBRARY_DIRS}
+  ${GSTREAMER-PBUTILS_LIBRARY_DIRS}
+  ${GSTREAMER-FFT_LIBRARY_DIRS}
+)
+
+set(LIBRARIES
+  ${GSTREAMER_LIBRARIES}
+  ${GSTREAMER-APP_LIBRARIES}
+  ${GSTREAMER-AUDIO_LIBRARIES}
+  ${GSTREAMER-PBUTILS_LIBRARIES}
+  ${GSTREAMER-FFT_LIBRARIES}
+    
+  pthread
+  ${GLIB_LIBRARIES}
+  ${GLIB_GIO_LIBRARIES}
+  ${GLIB_GOBJECT_LIBRARIES}
+)
+
+set(SOURCES
+    ${PROJECT_SOURCES_DIR}/main.cpp
+    ${PROJECT_SOURCES_DIR}/gstreamer/GStreamerLauncher.cpp
+    ${PROJECT_SOURCES_DIR}/exceptions/LogMsgCreator.cpp
+)
+
+add_executable(${CMAKE_PROJECT_NAME} ${SOURCES})
+target_link_libraries(${CMAKE_PROJECT_NAME} ${LIBRARIES})
