@@ -4,8 +4,7 @@
 
 namespace gstreamer {
 
-class GStreamerDeleter
-{
+class GStreamerDeleter {
 public:
     static void element(GstElement* element);
     static void bus(GstBus* bus);

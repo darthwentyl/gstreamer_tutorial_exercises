@@ -16,6 +16,11 @@ GStreamerPipeline::GStreamerPipeline() :
         pipeline(nullptr, GStreamerDeleter::element)
 {}
 
+GStreamerPipeline::~GStreamerPipeline()
+{
+    gst_element_set_state(pipeline.get(), GST_STATE_NULL);
+}
+
 void GStreamerPipeline::create(const std::string& pipelineName)
 {
     pipeline.reset(gst_pipeline_new(pipelineName.c_str()));
@@ -31,8 +36,7 @@ void GStreamerPipeline::create(const std::string& pipelineName)
 void GStreamerPipeline::build(GStreamerSource& source, GStreamerSink& sink)
 {
     gst_bin_add_many(GST_BIN(pipeline.get()), source.get(), sink.get(), nullptr);
-    if(gst_element_link(source.get(), sink.get()) != TRUE)
-    {
+    if (gst_element_link(source.get(), sink.get()) != TRUE) {
         throw CannotBuildPipeline(LogMsgCreator::createMsg(
                                                     std::string(__FILE__),
                                                     std::string(__FUNCTION__),

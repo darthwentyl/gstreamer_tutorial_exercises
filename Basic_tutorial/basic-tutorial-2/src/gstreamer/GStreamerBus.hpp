@@ -8,12 +8,12 @@ namespace gstreamer {
 
 class GStreamerPipeline;
 
-class GStreamerBus
-{
+class GStreamerBus {
 public:
     GStreamerBus();
 
     void create(GStreamerPipeline& pipeline);
+    GstBus* get();
 
 private:
     std::unique_ptr<GstBus, void(*)(GstBus*)> bus;

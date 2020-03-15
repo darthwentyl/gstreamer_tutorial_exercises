@@ -31,6 +31,7 @@ set(SOURCES
 
     ${PROJECT_SOURCES_DIR}/gstreamer/handlers/MsgHandleError.cpp
     ${PROJECT_SOURCES_DIR}/gstreamer/handlers/MsgHandleEos.cpp
+    ${PROJECT_SOURCES_DIR}/gstreamer/handlers/MsgHandleFactory.cpp
 
     ${PROJECT_SOURCES_DIR}/exceptions/LogMsgCreator.cpp
 )

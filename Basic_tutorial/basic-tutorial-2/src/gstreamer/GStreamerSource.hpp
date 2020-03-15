@@ -6,8 +6,7 @@
 
 namespace gstreamer {
 
-class GStreamerSource
-{
+class GStreamerSource {
 public:
     GStreamerSource();
     void create(const std::string& sourceName);

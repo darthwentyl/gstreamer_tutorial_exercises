@@ -1,9 +1,10 @@
 #pragma once
 
+#include <stdexcept>
+
 namespace exceptions {
 
-class CriticalError
-{
+class CriticalError : std::exception {
 };
 
 } // exceptions

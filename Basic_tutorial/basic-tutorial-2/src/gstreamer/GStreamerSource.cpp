@@ -15,8 +15,7 @@ GStreamerSource::GStreamerSource() :
 void GStreamerSource::create(const std::string& sourceName)
 {
     source.reset(gst_element_factory_make(sourceName.c_str(), "source"));
-    if(!source)
-    {
+    if (!source) {
         throw CannotCreateSource(LogMsgCreator::createMsg(
                                                     std::string(__FILE__),
                                                     std::string(__FUNCTION__),

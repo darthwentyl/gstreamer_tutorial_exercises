@@ -15,8 +15,7 @@ GStreamerSink::GStreamerSink() :
 void GStreamerSink::create(const std::string& sinkName)
 {
     sink.reset(gst_element_factory_make(sinkName.c_str(), "sink"));
-    if(!sink)
-    {
+    if (!sink) {
         throw CannotCreateSink(LogMsgCreator::createMsg(
                                                     std::string(__FILE__),
                                                     std::string(__FUNCTION__),

@@ -5,9 +5,9 @@
 
 namespace exceptions {
 
-class CannotGetBus : public std::runtime_error {
+class CannotCreateMessage : public std::runtime_error {
 public:
-    CannotGetBus(const std::string& msg) :
+    CannotCreateMessage(const std::string& msg) :
         std::runtime_error(msg)
     {}
 };

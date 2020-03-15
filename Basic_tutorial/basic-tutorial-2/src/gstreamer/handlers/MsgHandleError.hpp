@@ -4,11 +4,10 @@
 
 namespace gstreamer { namespace handlers {
 
-class MsgHandleError : public MsgHandleIfc
-{
+class MsgHandleError : public MsgHandleIfc {
 public:
     virtual ~MsgHandleError() = default;
-    virtual void handle() override;
+    virtual void handle(GstMessage& msg) override;
 };
 
 } } // gstreamer::handlers

@@ -4,8 +4,7 @@
 
 namespace exceptions {
 
-class LogMsgCreator
-{
+class LogMsgCreator {
 public:
     static std::string createMsg(const std::string& file,
                                  const std::string& func,

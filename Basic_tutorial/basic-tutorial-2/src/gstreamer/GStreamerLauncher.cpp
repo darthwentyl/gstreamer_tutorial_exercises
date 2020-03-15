@@ -19,36 +19,22 @@ void GStreamerLauncher::create(const std::string& sourceName,
                                const std::string& sinkName,
                                const std::string& pipelineName)
 {
-    try {
-        source.create(sourceName);
-        sink.create(sinkName);
-        pipeline.create(pipelineName);
-        pipeline.build(source, sink);
-        source.changeProperties();
-    } catch(const std::exception& e) {
-        std::cerr << e.what() << std::endl;
-        throw CriticalError();
-    }
+    source.create(sourceName);
+    sink.create(sinkName);
+    pipeline.create(pipelineName);
+    pipeline.build(source, sink);
+    source.changeProperties();
 }
 
 void GStreamerLauncher::play()
 {
-    try {
-        pipeline.play();
-    } catch(const std::exception& e) {
-        std::cerr << e.what() << std::endl;
-        throw CriticalError();
-    }
+    pipeline.play();
 }
 
 void GStreamerLauncher::wait()
 {
-    try {
-        bus.create(pipeline);
-    } catch(const std::exception& e) {
-        std::cerr << e.what() << std::endl;
-        throw CriticalError();
-    }
+    bus.create(pipeline);
+    message.wait(bus);
 }
 
 } // gstreamer

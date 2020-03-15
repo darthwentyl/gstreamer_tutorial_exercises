@@ -25,4 +25,9 @@ void GStreamerBus::create(GStreamerPipeline& pipeline)
     }
 }
 
+GstBus* GStreamerBus::get()
+{
+    return bus.get();
+}
+
 } // gstreamer

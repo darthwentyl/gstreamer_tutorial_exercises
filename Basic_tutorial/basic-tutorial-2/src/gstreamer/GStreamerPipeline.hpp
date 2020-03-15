@@ -9,10 +9,11 @@ namespace gstreamer {
 class GStreamerSource;
 class GStreamerSink;
 
-class GStreamerPipeline
-{
+class GStreamerPipeline {
 public:
     GStreamerPipeline();
+    ~GStreamerPipeline();
+
     void create(const std::string& pipelineName);
     void build(GStreamerSource& source, GStreamerSink& sink);
     void play();
