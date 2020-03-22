@@ -2,7 +2,6 @@
 #include <gstreamer/GStreamerDeleter.hpp>
 
 #include <exceptions/LogMsgCreator.hpp>
-#include <exceptions/CannotCreateSource.hpp>
 
 namespace gstreamer {
 
@@ -16,11 +15,11 @@ void GStreamerSource::create(const std::string& sourceName)
 {
     source.reset(gst_element_factory_make(sourceName.c_str(), "source"));
     if (!source) {
-        throw CannotCreateSource(LogMsgCreator::createMsg(
-                                                    std::string(__FILE__),
-                                                    std::string(__FUNCTION__),
-                                                    __LINE__,
-                                                    std::string("Cannot create source")));
+        throw std::runtime_error(LogMsgCreator::createMsg(
+                                                std::string(__FILE__),
+                                                std::string(__FUNCTION__),
+                                                __LINE__,
+                                                std::string("Cannot create source")));
     }
 }
 

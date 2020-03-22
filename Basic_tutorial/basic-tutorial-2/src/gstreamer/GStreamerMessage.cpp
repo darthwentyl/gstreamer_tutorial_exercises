@@ -5,8 +5,6 @@
 #include <gstreamer/handlers/MsgHandleFactory.hpp>
 
 #include <exceptions/LogMsgCreator.hpp>
-#include <exceptions/CannotCreateMessage.hpp>
-#include <exceptions/UnexpectedMessage.hpp>
 
 namespace gstreamer {
 
@@ -25,7 +23,7 @@ void GStreamerMessage::wait(GStreamerBus& bus)
     msg.reset(gst_bus_timed_pop_filtered(bus.get(), GST_CLOCK_TIME_NONE,
                          (GstMessageType)(GST_MESSAGE_ERROR|GST_MESSAGE_EOS)));
     if (!msg) {
-        throw CannotCreateMessage(LogMsgCreator::createMsg(
+        throw std::runtime_error(LogMsgCreator::createMsg(
                                                 std::string(__FILE__),
                                                 std::string(__FUNCTION__),
                                                 __LINE__,
@@ -36,11 +34,11 @@ void GStreamerMessage::wait(GStreamerBus& bus)
     if (iter != handlerMap.end()) {
         iter->second->handle(*msg.get());
     } else {
-        throw UnexpectedMessage(LogMsgCreator::createMsg(
-                                            std::string(__FILE__),
-                                            std::string(__FUNCTION__),
-                                            __LINE__,
-                                            std::string("Unexpected message received")));
+        throw std::runtime_error(LogMsgCreator::createMsg(
+                                                std::string(__FILE__),
+                                                std::string(__FUNCTION__),
+                                                __LINE__,
+                                                std::string("Unexpected message received")));
     }
 }
 

@@ -3,7 +3,6 @@
 #include <gstreamer/GStreamerDeleter.hpp>
 
 #include <exceptions/LogMsgCreator.hpp>
-#include <exceptions/MessageError.hpp>
 
 #include <gst/gst.h>
 
@@ -18,7 +17,7 @@ void MsgHandleError::handle(GstMessage& msg)
 {
     std::ostringstream ss;
     ss << "Error received from element " << GST_OBJECT_NAME(msg.src);
-    throw MessageError(LogMsgCreator::createMsg(
+    throw std::runtime_error(LogMsgCreator::createMsg(
                                             std::string(__FILE__),
                                             std::string(__FUNCTION__),
                                             __LINE__,

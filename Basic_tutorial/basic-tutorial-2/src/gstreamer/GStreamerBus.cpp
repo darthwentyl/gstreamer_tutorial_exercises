@@ -3,7 +3,6 @@
 #include <gstreamer/GStreamerPipeline.hpp>
 
 #include <exceptions/LogMsgCreator.hpp>
-#include <exceptions/CannotGetBus.hpp>
 
 namespace gstreamer {
 
@@ -17,7 +16,7 @@ void GStreamerBus::create(GStreamerPipeline& pipeline)
 {
     bus.reset(gst_element_get_bus(pipeline.get()));
     if (!bus) {
-        throw CannotGetBus(LogMsgCreator::createMsg(
+        throw std::runtime_error(LogMsgCreator::createMsg(
                                             std::string(__FILE__),
                                             std::string(__FUNCTION__),
                                             __LINE__,

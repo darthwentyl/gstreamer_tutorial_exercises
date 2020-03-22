@@ -1,14 +1,9 @@
 #include <gstreamer/GStreamerLauncher.hpp>
 
-#include <exceptions/CriticalError.hpp>
-
 #include <sstream>
 #include <iostream>
 
 namespace gstreamer {
-
-using namespace exceptions;
-
 
 GStreamerLauncher::GStreamerLauncher(int argc, char *argv[])
 {

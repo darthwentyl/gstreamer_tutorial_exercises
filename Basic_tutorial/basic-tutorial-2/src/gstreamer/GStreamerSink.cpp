@@ -2,7 +2,6 @@
 #include <gstreamer/GStreamerDeleter.hpp>
 
 #include <exceptions/LogMsgCreator.hpp>
-#include <exceptions/CannotCreateSink.hpp>
 
 namespace gstreamer {
 
@@ -16,11 +15,11 @@ void GStreamerSink::create(const std::string& sinkName)
 {
     sink.reset(gst_element_factory_make(sinkName.c_str(), "sink"));
     if (!sink) {
-        throw CannotCreateSink(LogMsgCreator::createMsg(
-                                                    std::string(__FILE__),
-                                                    std::string(__FUNCTION__),
-                                                    __LINE__,
-                                                    std::string("Cannot create sink")));
+        throw std::runtime_error(LogMsgCreator::createMsg(
+                                                std::string(__FILE__),
+                                                std::string(__FUNCTION__),
+                                                __LINE__,
+                                                std::string("Cannot create sink")));
     }
 }
 
