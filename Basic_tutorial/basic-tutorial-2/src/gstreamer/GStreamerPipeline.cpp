@@ -2,6 +2,7 @@
 #include <gstreamer/GStreamerDeleter.hpp>
 #include <gstreamer/GStreamerSource.hpp>
 #include <gstreamer/GStreamerSink.hpp>
+#include <gstreamer/GStreamerFilter.hpp>
 
 #include <exceptions/LogMsgCreator.hpp>
 #include <exceptions/CannotCreatePipeline.hpp>
@@ -33,10 +34,10 @@ void GStreamerPipeline::create(const std::string& pipelineName)
     }
 }
 
-void GStreamerPipeline::build(GStreamerSource& source, GStreamerSink& sink)
+void GStreamerPipeline::build(GStreamerSource& source, GStreamerSink& sink, GStreamerFilter& filter)
 {
-    gst_bin_add_many(GST_BIN(pipeline.get()), source.get(), sink.get(), nullptr);
-    if (gst_element_link(source.get(), sink.get()) != TRUE) {
+    gst_bin_add_many(GST_BIN(pipeline.get()), source.get(), filter.get(), sink.get(), nullptr);
+    if (gst_element_link_many(source.get(), filter.get(), sink.get(), nullptr) != TRUE) {
         throw CannotBuildPipeline(LogMsgCreator::createMsg(
                                                     std::string(__FILE__),
                                                     std::string(__FUNCTION__),

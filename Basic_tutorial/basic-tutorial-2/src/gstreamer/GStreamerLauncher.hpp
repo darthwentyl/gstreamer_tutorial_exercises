@@ -4,6 +4,7 @@
 
 #include <gstreamer/GStreamerSource.hpp>
 #include <gstreamer/GStreamerSink.hpp>
+#include <gstreamer/GStreamerFilter.hpp>
 #include <gstreamer/GStreamerPipeline.hpp>
 #include <gstreamer/GStreamerBus.hpp>
 #include <gstreamer/GStreamerMessage.hpp>
@@ -25,6 +26,7 @@ public:
 private:
     GStreamerSource source;
     GStreamerSink sink;
+    GStreamerFilter filter;
     GStreamerPipeline pipeline;
     GStreamerBus bus;
     GStreamerMessage message;

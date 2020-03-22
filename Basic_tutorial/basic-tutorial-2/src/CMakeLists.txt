@@ -24,6 +24,7 @@ set(SOURCES
     ${PROJECT_SOURCES_DIR}/gstreamer/GStreamerLauncher.cpp
     ${PROJECT_SOURCES_DIR}/gstreamer/GStreamerSource.cpp
     ${PROJECT_SOURCES_DIR}/gstreamer/GStreamerSink.cpp
+    ${PROJECT_SOURCES_DIR}/gstreamer/GStreamerFilter.cpp
     ${PROJECT_SOURCES_DIR}/gstreamer/GStreamerBus.cpp
     ${PROJECT_SOURCES_DIR}/gstreamer/GStreamerPipeline.cpp
     ${PROJECT_SOURCES_DIR}/gstreamer/GStreamerMessage.cpp

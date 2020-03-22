@@ -21,8 +21,9 @@ void GStreamerLauncher::create(const std::string& sourceName,
 {
     source.create(sourceName);
     sink.create(sinkName);
+    filter.create("vertigotv");
     pipeline.create(pipelineName);
-    pipeline.build(source, sink);
+    pipeline.build(source, sink, filter);
     source.changeProperties();
 }
 

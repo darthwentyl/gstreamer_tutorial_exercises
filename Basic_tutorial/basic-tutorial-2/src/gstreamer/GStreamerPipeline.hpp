@@ -8,6 +8,7 @@ namespace gstreamer {
 
 class GStreamerSource;
 class GStreamerSink;
+class GStreamerFilter;
 
 class GStreamerPipeline {
 public:
@@ -15,7 +16,7 @@ public:
     ~GStreamerPipeline();
 
     void create(const std::string& pipelineName);
-    void build(GStreamerSource& source, GStreamerSink& sink);
+    void build(GStreamerSource& source, GStreamerSink& sink, GStreamerFilter& filter);
     void play();
     GstElement* get();
 
