@@ -31,16 +31,29 @@ void GStreamerPipeline::create(const std::string& pipelineName)
     }
 }
 
-void GStreamerPipeline::build(GStreamerSource& source, GStreamerSink& sink, GStreamerFilter& filter)
+void GStreamerPipeline::build(const std::vector<std::unique_ptr<GStreamerElementIfc>>& elements)
 {
-    gst_bin_add_many(GST_BIN(pipeline.get()), source.get(), filter.get(), sink.get(), nullptr);
-    if (gst_element_link_many(source.get(), filter.get(), sink.get(), nullptr) != TRUE) {
-        throw std::runtime_error(LogMsgCreator::createMsg(
-                                                std::string(__FILE__),
-                                                std::string(__FUNCTION__),
-                                                __LINE__,
-                                                std::string("Cannot build pipeline")));
+    for (const auto& element : elements) {
+        gst_bin_add(GST_BIN(pipeline.get()), element->get());
     }
+
+    for (size_t i = 0; i < elements.size() - 1; ++i) {
+        if (gst_element_link(elements[i]->get(), elements[i+1]->get()) != TRUE) {
+            throw std::runtime_error(LogMsgCreator::createMsg(
+                                                    std::string(__FILE__),
+                                                    std::string(__FUNCTION__),
+                                                    __LINE__,
+                                                    std::string("Cannot build pipeline")));
+        }
+    }
+//    gst_bin_add_many(GST_BIN(pipeline.get()), source.get(), filter.get(), sink.get(), nullptr);
+//    if (gst_element_link_many(source.get(), filter.get(), sink.get(), nullptr) != TRUE) {
+//        throw std::runtime_error(LogMsgCreator::createMsg(
+//                                                std::string(__FILE__),
+//                                                std::string(__FUNCTION__),
+//                                                __LINE__,
+//                                                std::string("Cannot build pipeline")));
+//    }
 }
 
 void GStreamerPipeline::play()

@@ -7,11 +7,8 @@ namespace gstreamer {
 
 using namespace exceptions;
 
-GStreamerFilter::GStreamerFilter() :
+GStreamerFilter::GStreamerFilter(const std::string& filterName) :
         filter(nullptr, GStreamerDeleter::element)
-{}
-
-void GStreamerFilter::create(const std::string& filterName)
 {
     filter.reset(gst_element_factory_make(filterName.c_str(), "filter"));
     if (!filter) {

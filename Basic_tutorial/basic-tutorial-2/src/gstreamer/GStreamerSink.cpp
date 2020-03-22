@@ -7,11 +7,8 @@ namespace gstreamer {
 
 using namespace exceptions;
 
-GStreamerSink::GStreamerSink() :
+GStreamerSink::GStreamerSink(const std::string& sinkName) :
         sink(nullptr, GStreamerDeleter::element)
-{}
-
-void GStreamerSink::create(const std::string& sinkName)
 {
     sink.reset(gst_element_factory_make(sinkName.c_str(), "sink"));
     if (!sink) {

@@ -3,12 +3,11 @@
 #include <gst/gst.h>
 
 #include <memory>
+#include <vector>
+
+#include <gstreamer/GStreamerElementIfc.hpp>
 
 namespace gstreamer {
-
-class GStreamerSource;
-class GStreamerSink;
-class GStreamerFilter;
 
 class GStreamerPipeline {
 public:
@@ -16,7 +15,7 @@ public:
     ~GStreamerPipeline();
 
     void create(const std::string& pipelineName);
-    void build(GStreamerSource& source, GStreamerSink& sink, GStreamerFilter& filter);
+    void build(const std::vector<std::unique_ptr<GStreamerElementIfc>>& elements);
     void play();
     GstElement* get();
 

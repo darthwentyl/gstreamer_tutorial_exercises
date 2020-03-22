@@ -10,16 +10,14 @@ GStreamerLauncher::GStreamerLauncher(int argc, char *argv[])
     gst_init(&argc, &argv);
 }
 
-void GStreamerLauncher::create(const std::string& sourceName,
-                               const std::string& sinkName,
-                               const std::string& pipelineName)
+void GStreamerLauncher::addGstElement(std::unique_ptr<GStreamerElementIfc> element) {
+    pipelineElements.emplace_back(std::move(element));
+}
+
+void GStreamerLauncher::create(const std::string& pipelineName)
 {
-    source.create(sourceName);
-    sink.create(sinkName);
-    filter.create("vertigotv");
     pipeline.create(pipelineName);
-    pipeline.build(source, sink, filter);
-    source.changeProperties();
+    pipeline.build(pipelineElements);
 }
 
 void GStreamerLauncher::play()

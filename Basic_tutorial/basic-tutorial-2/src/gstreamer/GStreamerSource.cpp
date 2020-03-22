@@ -7,11 +7,8 @@ namespace gstreamer {
 
 using namespace exceptions;
 
-GStreamerSource::GStreamerSource() :
+GStreamerSource::GStreamerSource(const std::string& sourceName) :
         source(nullptr, GStreamerDeleter::element)
-{}
-
-void GStreamerSource::create(const std::string& sourceName)
 {
     source.reset(gst_element_factory_make(sourceName.c_str(), "source"));
     if (!source) {
@@ -21,11 +18,12 @@ void GStreamerSource::create(const std::string& sourceName)
                                                 __LINE__,
                                                 std::string("Cannot create source")));
     }
+    g_object_set(source.get(), "pattern", 0, NULL);
 }
 
 void GStreamerSource::changeProperties()
 {
-    g_object_set(source.get(), "pattern", 0, NULL);
+
 }
 
 GstElement* GStreamerSource::get()

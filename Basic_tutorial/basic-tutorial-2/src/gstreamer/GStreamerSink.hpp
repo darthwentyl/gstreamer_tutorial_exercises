@@ -1,16 +1,17 @@
 #pragma once
 
-#include <gst/gst.h>
+#include <gstreamer/GStreamerElementIfc.hpp>
 
 #include <memory>
 
 namespace gstreamer {
 
-class GStreamerSink {
+class GStreamerSink : public GStreamerElementIfc {
 public:
-    GStreamerSink();
-    void create(const std::string& sourceName);
-    GstElement* get();
+    GStreamerSink(const std::string& sinkName);
+    virtual ~GStreamerSink() = default;
+
+    GstElement* get() override;
 
 private:
     std::unique_ptr<GstElement, void(*)(GstElement*)> sink;
