@@ -5,7 +5,7 @@
 #include <memory>
 #include <vector>
 
-#include <gstreamer/GStreamerElementIfc.hpp>
+#include <gstreamer/GStreamerElement.hpp>
 
 namespace gstreamer {
 
@@ -15,12 +15,17 @@ public:
     ~GStreamerDynamicPipeline();
 
     void create(const std::string& pipelineName);
-    void build(const std::vector<std::unique_ptr<GStreamerElementIfc>>& elements);
+    void addGstElement(std::unique_ptr<GStreamerElement> element);
+    void createBin();
+    void linkElements();
+    void setUrl(const std::string& url);
+    void registerHandler();
     void play();
     GstElement* get();
 
 private:
     std::unique_ptr<GstElement, void(*)(GstElement*)> pipeline;
+    std::vector<std::unique_ptr<GStreamerElement>> elements;
 };
 
 } // gstreamer

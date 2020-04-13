@@ -5,10 +5,10 @@
 #include <memory>
 #include <vector>
 
-#include <gstreamer/GStreamerElementIfc.hpp>
-#include <gstreamer/GStreamerPipeline.hpp>
+#include <gstreamer/GStreamerElement.hpp>
 #include <gstreamer/GStreamerBus.hpp>
 #include <gstreamer/GStreamerMessage.hpp>
+#include <gstreamer/GStreamerDynamicPipeline.hpp>
 
 namespace gstreamer {
 
@@ -17,15 +17,14 @@ public:
     GStreamerLauncher(int argc, char *argv[]);
     ~GStreamerLauncher() = default;
 
-    void addGstElement(std::unique_ptr<GStreamerElementIfc> element);
+    void addGstElement(std::unique_ptr<GStreamerElement> element);
 
     void create(const std::string& pipelineName);
 
-    void play();
+    void play(const std::string& url);
 
     void wait();
 private:
-    std::vector<std::unique_ptr<GStreamerElementIfc>> pipelineElements;
     GStreamerDynamicPipeline pipeline;
     GStreamerBus bus;
     GStreamerMessage message;

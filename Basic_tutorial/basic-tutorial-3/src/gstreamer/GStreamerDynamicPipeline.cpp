@@ -1,22 +1,31 @@
-#include <gstreamer/GStreamerPipeline.hpp>
 #include <gstreamer/GStreamerDeleter.hpp>
-#include <gstreamer/GStreamerSource.hpp>
-#include <gstreamer/GStreamerSink.hpp>
-#include <gstreamer/GStreamerFilter.hpp>
+#include <gstreamer/GStreamerElement.hpp>
+#include <gstreamer/GStreamerDynamicPipeline.hpp>
+#include <gstreamer/GStreamerPadAdd.hpp>
+
+#include <helpers/GstElementFinder.hpp>
 
 #include <exceptions/LogMsgCreator.hpp>
+
+#include <iostream>
 
 namespace gstreamer {
 
 using namespace exceptions;
+using namespace helpers;
 
 GStreamerDynamicPipeline::GStreamerDynamicPipeline() :
-        pipeline(nullptr, GStreamerDeleter::element)
+        pipeline(nullptr, GStreamerDeleter::pipeline)
 {}
 
 GStreamerDynamicPipeline::~GStreamerDynamicPipeline()
 {
     gst_element_set_state(pipeline.get(), GST_STATE_NULL);
+}
+
+void GStreamerDynamicPipeline::addGstElement(std::unique_ptr<GStreamerElement> element)
+{
+    elements.emplace_back(std::move(element));
 }
 
 void GStreamerDynamicPipeline::create(const std::string& pipelineName)
@@ -31,14 +40,24 @@ void GStreamerDynamicPipeline::create(const std::string& pipelineName)
     }
 }
 
-void GStreamerDynamicPipeline::build(const std::vector<std::unique_ptr<GStreamerElementIfc>>& elements)
+void GStreamerDynamicPipeline::createBin()
 {
     for (const auto& element : elements) {
-        gst_bin_add(GST_BIN(pipeline.get()), element->get());
+        gst_bin_add(GST_BIN(pipeline.get()), element->getGstElem());
+    }
+}
+
+void GStreamerDynamicPipeline::linkElements()
+{
+    std::vector<GStreamerElement*> helpVec;
+    for (const auto& element : elements) {
+        if (element->getName() != "source") {
+            helpVec.push_back(element.get());
+        }
     }
 
-    for (size_t i = 0; i < elements.size() - 1; ++i) {
-        if (gst_element_link(elements[i]->get(), elements[i+1]->get()) != TRUE) {
+    for (size_t i = 0; i < helpVec.size() - 1; ++i) {
+        if (gst_element_link(helpVec[i]->getGstElem(), helpVec[i+1]->getGstElem()) != TRUE) {
             throw std::runtime_error(LogMsgCreator::createMsg(
                                                     std::string(__FILE__),
                                                     std::string(__FUNCTION__),
@@ -46,6 +65,19 @@ void GStreamerDynamicPipeline::build(const std::vector<std::unique_ptr<GStreamer
                                                     std::string("Cannot build pipeline")));
         }
     }
+}
+
+void GStreamerDynamicPipeline::registerHandler()
+{
+
+}
+
+void GStreamerDynamicPipeline::setUrl(const std::string& url)
+{
+    auto source = GstElementFinder::find("source", elements)->getGstElem();
+    auto convert = GstElementFinder::find("convert", elements)->getGstElem();
+    g_object_set(source, "uri", url.c_str(), NULL);
+    g_signal_connect(source, "pad-added", G_CALLBACK(&GStreamerPadAdd::padAdd), convert);
 }
 
 void GStreamerDynamicPipeline::play()

@@ -1,8 +1,7 @@
 #include <gstreamer/GStreamerBus.hpp>
 #include <gstreamer/GStreamerDeleter.hpp>
-#include <gstreamer/GStreamerPipeline.hpp>
-
 #include <exceptions/LogMsgCreator.hpp>
+#include "GStreamerDynamicPipeline.hpp"
 
 namespace gstreamer {
 
